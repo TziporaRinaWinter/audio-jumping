@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jumping Character</title>
+    <style>
+      body {
+        background-image: url("background.jpg");
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        height: 100vh;
+      }
+      #character {
+        position: absolute;
+        bottom: 10%;
+        left: 25%;
+        transform: translateX(-50%);
+        transition: transform 0.2s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <img id="character" src="small_jump.JPG" alt="Character" width="100" />
+    <script>
+      const character = document.getElementById("character");
+      let isJumping = false;
+
+      // Define image sources for different jump heights
+      const jumpImages = ["small_jump.JPG", "medium_jump.JPG", "high_jump.JPG"];
+
+      navigator.mediaDevices
+        .getUserMedia({ audio: true })
+        .then((stream) => {
+          const audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
+          const analyser = audioContext.createAnalyser();
+          const microphone = audioContext.createMediaStreamSource(stream);
+          microphone.connect(analyser);
+          analyser.fftSize = 256;
+          const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+          function getAverageVolume() {
+            analyser.getByteFrequencyData(dataArray);
+            return dataArray.reduce((a, b) => a + b) / dataArray.length;
+          }
+
+          function jumpCharacter() {
+            const average = getAverageVolume();
+            const jumpHeight = average * 4; // Adjust this value to control jump height
+
+            if (jumpHeight > 5 && !isJumping) {
+              isJumping = true; // Set flag to true
+
+              // Determine the jump image based on height
+              let jumpImageIndex = 0;
+              if (jumpHeight > 250) {
+                jumpImageIndex = 2; // High jump
+              } else if (jumpHeight > 100) {
+                jumpImageIndex = 1; // Medium jump
+              }
+              character.src = jumpImages[jumpImageIndex]; // Update image source
+              character.style.transform = `translate(-50%, -${jumpHeight}px)`;
+              setTimeout(() => {
+                character.style.transform = "translate(-50%, 0)";
+                character.src = "small_jump.JPG"; // Reset to original image
+                isJumping = false; // Reset flag after landing
+              }, 400); // Duration of jump
+            }
+          }
+
+          setInterval(jumpCharacter, 100); // Check every 100ms
+        })
+        .catch((err) => {
+          console.error("Error accessing microphone:", err);
+        });
+    </script>
+  </body>
+</html>
