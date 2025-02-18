@@ -22,13 +22,22 @@
     </style>
   </head>
   <body>
-    <img id="character" src="small_jump.JPG" alt="Character" width="100" />
+    <img
+      id="character"
+      src="images/small_jump.jpg"
+      alt="Character"
+      width="100"
+    />
     <script>
       const character = document.getElementById("character");
       let isJumping = false;
 
       // Define image sources for different jump heights
-      const jumpImages = ["small_jump.JPG", "medium_jump.JPG", "high_jump.JPG"];
+      const jumpImages = [
+        "images/small_jump.jpg",
+        "images/medium_jump.jpg",
+        "images/high_jump.jpg",
+      ];
 
       navigator.mediaDevices
         .getUserMedia({ audio: true })
