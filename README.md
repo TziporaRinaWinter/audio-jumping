@@ -23,7 +23,7 @@ This project was built using:
 - **GitHub Pages** for hosting the game online.
 
 ### 📸 Screenshots
-<img src="https://github.com/user-attachments/assets/274e45b3-0758-4aff-a1aa-79673718982d" width="400"><img/>
+<img src="https://github.com/user-attachments/assets/a8396dfd-373e-4bd9-9ef4-e3c3728cf540" width="400"><img/>
 
 ### ⭐ Support the Project
 If you enjoyed the project, give it a ⭐ on GitHub to support it!
