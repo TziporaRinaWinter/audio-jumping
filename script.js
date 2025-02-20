@@ -42,13 +42,13 @@ navigator.mediaDevices
           character.style.transform = "translate(-50%, 0)";
           character.src = jumpImages[0];
           isJumping = false;
-        }, 300);
+        }, 500);
       }
 
-      requestAnimationFrame(jumpCharacter); // Call the function again
+      requestAnimationFrame(jumpCharacter);
     }
 
-    requestAnimationFrame(jumpCharacter); // Start the loop
+    requestAnimationFrame(jumpCharacter);
   })
   .catch((err) => {
     console.error("Error accessing microphone:", err);

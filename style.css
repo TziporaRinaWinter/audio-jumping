@@ -18,7 +18,7 @@ html {
   background-image: url("images/background-1.png");
   background-size: 50% 100%;
   background-repeat: repeat;
-  animation: slide 12s linear infinite;
+  animation: slide 10s linear infinite;
 }
 @keyframes slide {
   0% {
