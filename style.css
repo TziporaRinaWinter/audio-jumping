@@ -6,7 +6,7 @@ html {
 }
 #character {
   position: absolute;
-  bottom: 20%;
+  bottom: 10%;
   left: 25%;
   transform: translateX(-50%);
   transition: transform 0.2s ease;
@@ -27,4 +27,36 @@ html {
   100% {
     background-position: -100% 0;
   }
+}
+#infoBox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  z-index: 1000;
+  display: none;
+  border-radius: 20px;
+}
+
+#startButton,
+#closeInfo {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1001;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#startButton:hover {
+  background-color: rgba(0, 0, 0, 0.9);
 }
