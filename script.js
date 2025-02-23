@@ -1,14 +1,112 @@
 const character = document.getElementById("character");
 let isJumping = false;
 const speed = 4;
-let hitCount = 0; // משתנה לספירת הנגיעות
-let gameActive = true; // משתנה לבדיקת מצב המשחק
-let objectCreationInterval; // משתנה לשמירת מזהה ה-interval
+let hitCount = 0;
+let gameActive = true;
+let objectCreationInterval;
 
 const jumpImages = [
   "images/small_jump.png",
   "images/medium_jump.png",
   "images/high_jump.png",
+];
+
+const objects = [
+  {
+    src: "images/object1.png",
+    isFail: false,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object2.png",
+    isFail: false,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object3.png",
+    isFail: false,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object4.png",
+    isFail: false,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object5.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object6.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object7.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object8.png",
+    isFail: false,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object9.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object10.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object11.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object12.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object13.png",
+    isFail: true,
+    isUpperHalf: false,
+  },
+  {
+    src: "images/object14.png",
+    isFail: false,
+    isUpperHalf: true, // גבוה
+  },
+  {
+    src: "images/object15.png",
+    isFail: false,
+    isUpperHalf: true,
+  },
+  {
+    src: "images/object16.png",
+    isFail: false,
+    isUpperHalf: true,
+  },
+  {
+    src: "images/object17.png",
+    isFail: false,
+    isUpperHalf: true,
+  },
+  {
+    src: "images/object18.png",
+    isFail: false,
+    isUpperHalf: true,
+  },
+  {
+    src: "images/object19.png",
+    isFail: false,
+    isUpperHalf: true,
+  },
 ];
 
 navigator.mediaDevices
@@ -48,107 +146,15 @@ navigator.mediaDevices
       }
     }
 
-    requestAnimationFrame(jumpCharacter);
-
-    const objects = [
-      {
-        src: "images/object1.png",
-        isFail: false,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object2.png",
-        isFail: false,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object3.png",
-        isFail: false,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object4.png",
-        isFail: false,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object5.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object6.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object7.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object8.png",
-        isFail: false,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object9.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object10.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object11.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object12.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object13.png",
-        isFail: true,
-        heightLimit: window.innerHeight / 2,
-      },
-      {
-        src: "images/object14.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-      {
-        src: "images/object15.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-      {
-        src: "images/object16.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-      {
-        src: "images/object17.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-      {
-        src: "images/object18.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-      {
-        src: "images/object19.png",
-        isFail: false,
-        heightLimit: window.innerHeight,
-      },
-    ];
-
     const activeObjects = [];
+
+    gameActive = true;
+    objectCreationInterval = setInterval(() => {
+      if (gameActive) {
+        createObject();
+      }
+    }, 3000);
+    requestAnimationFrame(jumpCharacter);
 
     function createObject() {
       const randomIndex = Math.floor(Math.random() * objects.length);
@@ -158,8 +164,13 @@ navigator.mediaDevices
       object.style.position = "absolute";
       object.style.right = "0px";
 
-      const maxHeight = objectData.heightLimit;
-      object.style.top = `${Math.random() * (maxHeight - 100) + 100}px`;
+      let minHeight = objectData.isUpperHalf ? 200 : window.innerHeight / 2;
+      let maxHeight = objectData.isUpperHalf
+        ? window.innerHeight / 2
+        : window.innerHeight;
+      object.style.top = `${
+        Math.random() * (maxHeight - minHeight) + minHeight
+      }px`;
 
       document.body.appendChild(object);
       activeObjects.push(object);
@@ -182,7 +193,6 @@ navigator.mediaDevices
             endGame();
           } else {
             hitCount++;
-            console.log("Hit count:", hitCount);
             object.remove();
             activeObjects.splice(activeObjects.indexOf(object), 1);
             return;
@@ -204,10 +214,8 @@ navigator.mediaDevices
       gameActive = false;
       clearInterval(objectCreationInterval);
       activeObjects.forEach((obj) => obj.remove());
-
       const originalPosition =
         parseFloat(character.style.transform.split("(")[1]) || 0;
-
       character.style.transition = "transform 1s";
       character.style.transform = `translate(-50%, -${
         originalPosition + 1500
@@ -218,21 +226,35 @@ navigator.mediaDevices
       }, 1200);
     }
 
-    function showResult() {
-      const resultBox = document.createElement("div");
-      resultBox.style.position = "fixed";
-      resultBox.style.top = "50%";
-      resultBox.style.left = "50%";
-      resultBox.style.transform = "translate(-50%, -50%)";
-      resultBox.style.padding = "20px";
-      resultBox.style.backgroundColor = "white";
-      resultBox.style.border = "2px solid black";
-      resultBox.style.zIndex = "1000";
-      resultBox.innerText = `המשחק נגמר! אספת ${hitCount} אוצרות`;
-      document.body.appendChild(resultBox);
+    function showInfoBox(message) {
+      const infoBox = document.getElementById("infoBox");
+      infoBox.querySelector("p").innerText = message;
+      infoBox.style.display = "block";
     }
 
-    objectCreationInterval = setInterval(createObject, 3000);
+    function showResult() {
+      gameActive = false;
+      const message = `המשחק נגמר! אספת ${hitCount} אוצרות`;
+      hitCount = 0;
+      showInfoBox(message);
+    }
+
+    document.getElementById("startButton").addEventListener("click", () => {
+      const message =
+        "המשחק פועל לפי רמת הקול שלך! \n" +
+        "שים לב: גובה הקפיצה תלוי בגובה הקול שלך \n" +
+        "עליך לאסוף כמה שיותר אוצרות ולהיזהר מהמכשולים \n" +
+        "מכשולים - עצים, אבנים, סלעים וכדו' \n" +
+        "בהצלחה ובהנאה!!!";
+      showInfoBox(message);
+    });
+
+    document.getElementById("closeInfo").addEventListener("click", () => {
+      document.getElementById("infoBox").style.display = "none";
+      gameActive = true;
+      objectCreationInterval = setInterval(createObject, 3000);
+      requestAnimationFrame(jumpCharacter);
+    });
   })
   .catch((err) => {
     console.error("Error accessing microphone:", err);
